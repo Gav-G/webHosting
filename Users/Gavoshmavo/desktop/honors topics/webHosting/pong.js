@@ -21,33 +21,56 @@ var ballVelY = 3;
 var scorePlayer1 = 0;
 var scorePlayer2 = 0;
 
+// track keyboard input for each paddle
+var paddle1UpPressed = false;
+var paddle1DownPressed = false;
+var paddle2UpPressed = false;
+var paddle2DownPressed = false;
+
 // move paddles based on keyboard input
 document.addEventListener('keydown', function(event) {
   if (event.key === 'w') {
-    paddle1Y -= 20;
+    paddle1UpPressed = true;
   } else if (event.key === 's') {
-    paddle1Y += 20;
+    paddle1DownPressed = true;
   } else if (event.key === 'ArrowUp') {
-    paddle2Y -= 20;
+    paddle2UpPressed = true;
   } else if (event.key === 'ArrowDown') {
-    paddle2Y += 20;
+    paddle2DownPressed = true;
   }
-  if (paddle1Y < 0) {
-    paddle1Y = 0;
-  } else if (paddle1Y > 340) {
-    paddle1Y = 340;
+});
+
+document.addEventListener('keyup', function(event) {
+  if (event.key === 'w') {
+    paddle1UpPressed = false;
+  } else if (event.key === 's') {
+    paddle1DownPressed = false;
+  } else if (event.key === 'ArrowUp') {
+    paddle2UpPressed = false;
+  } else if (event.key === 'ArrowDown') {
+    paddle2DownPressed = false;
   }
-  if (paddle2Y < 0) {
-    paddle2Y = 0;
-  } else if (paddle2Y > 340) {
-    paddle2Y = 340;
-  }
-  paddle1.style.top = paddle1Y + 'px';
-  paddle2.style.top = paddle2Y + 'px';
 });
 
 // update ball position and check for collisions
 function update() {
+  // move paddles based on keyboard input
+  if (paddle1UpPressed && paddle1Y > 0) {
+    paddle1Y -= 5;
+  }
+  if (paddle1DownPressed && paddle1Y < 340) {
+    paddle1Y += 5;
+  }
+  if (paddle2UpPressed && paddle2Y > 0) {
+    paddle2Y -= 5;
+  }
+  if (paddle2DownPressed && paddle2Y < 340) {
+    paddle2Y += 5;
+  }
+  paddle1.style.top = paddle1Y + 'px';
+  paddle2.style.top = paddle2Y + 'px';
+
+  // update ball position and check for collisions
   ballX += ballVelX;
   ballY += ballVelY;
   if (ballY < 0 || ballY > 390) {
